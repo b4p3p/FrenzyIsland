@@ -16,29 +16,29 @@ namespace Assets.components {
             Voxel frontVoxel = world.getVoxelAt(x, y, z - 1);
             Voxel rightVoxel = world.getVoxelAt(x + 1, y, z);
             Voxel leftVoxel = world.getVoxelAt(x - 1, y, z);
-
+            bool isTransparent = voxel.prototype.solid;
             
-            if (topVoxel==null || (topVoxel!=null && !topVoxel.prototype.solid)) {
+            if (topVoxel==null || (topVoxel!=null && (!topVoxel.prototype.solid && isTransparent))) {
                 this.FaceDataUp(voxel, x, y, z, meshData);
             }
 
-            if (bottomVoxel == null || (bottomVoxel!=null && !bottomVoxel.prototype.solid)) {
+            if (bottomVoxel == null || (bottomVoxel!=null && (!bottomVoxel.prototype.solid && isTransparent))) {
                 this.FaceDataDown(voxel, x, y, z, meshData);
             }
 
-            if (backVoxel == null || (backVoxel!=null && !backVoxel.prototype.solid)){
+            if (backVoxel == null || (backVoxel!=null && (!backVoxel.prototype.solid && isTransparent))){
                 this.FaceDataNorth(voxel, x, y, z, meshData);
             }
 
-            if (frontVoxel == null || (frontVoxel!=null && !frontVoxel.prototype.solid)) {
+            if (frontVoxel == null || (frontVoxel!=null && (!frontVoxel.prototype.solid && isTransparent))) {
                 this.FaceDataSouth(voxel, x, y, z, meshData);
             }
 
-            if (rightVoxel == null || (rightVoxel!=null && !rightVoxel.prototype.solid)){
+            if (rightVoxel == null || (rightVoxel!=null && (!rightVoxel.prototype.solid && isTransparent))){
                 this.FaceDataEast(voxel, x, y, z, meshData);
             }
 
-            if (leftVoxel == null || (leftVoxel!=null && !leftVoxel.prototype.solid)){
+            if (leftVoxel == null || (leftVoxel!=null && (!leftVoxel.prototype.solid && isTransparent))){
                 this.FaceDataWest(voxel, x, y, z, meshData);
             }
         }

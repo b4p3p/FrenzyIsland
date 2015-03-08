@@ -41,8 +41,8 @@ namespace Assets.components {
             VoxelPrototype waterPrototype = this._factory.getPrototype(3);
 
             int chunkSize = this._world.chunkSize;
-            for (int x = 0; x < 2; x++) {
-                for (int z = 0; z < 2; z++) {
+            for (int x = 0; x < this._world.chunkSize; x++) {
+                for (int z = 0; z < this._world.chunkSize; z++) {
                     for (int y = 0; y < 4; y++) {
                         Voxel voxel;
                         switch (y) {
@@ -53,7 +53,20 @@ namespace Assets.components {
                             default:
                                 voxel = waterPrototype.instantiateVoxel();
                                 break;
+                        }
+                        chunk.addVoxelAt(voxel, x, y, z);
+                    }
+                }
+            }
 
+            for (int x = 5; x < 11; x++) {
+                for (int z = 5; z < 11; z++) {
+                    for (int y = 0; y < 6; y++) {
+                        Voxel voxel;
+                        if (y == 5) {
+                            voxel = grassyPrototype.instantiateVoxel();
+                        } else {
+                            voxel = muddyPrototype.instantiateVoxel();
                         }
                         chunk.addVoxelAt(voxel, x, y, z);
                     }
