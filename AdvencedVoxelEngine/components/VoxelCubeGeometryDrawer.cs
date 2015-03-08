@@ -94,8 +94,6 @@ namespace Assets.components {
             this.addTriangles(voxel.prototype.subMaterialIndex, meshData);
         }
 
-
-
         protected void FaceDataNorth(Voxel voxel, int x, int y, int z, VoxelMeshData meshData) {
             meshData.addVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
             meshData.addVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
