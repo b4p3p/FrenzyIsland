@@ -42,22 +42,31 @@ namespace Assets.entities {
             this._uvs.Add(uv);
         }
 
-        public Mesh mesh {
+        public Dictionary<int, List<int>> subTriangles {
             get {
-                Mesh retval = new Mesh();
-                retval.vertices = this._vertices.ToArray();
-                retval.triangles = this._triangles.ToArray();
-                retval.uv = this._uvs.ToArray();
-                retval.subMeshCount = this._subtriangles.Keys.Count;
-
-                foreach (int submeshIndex in this._subtriangles.Keys) {
-                    List<int> subtriangles = this._subtriangles[submeshIndex];
-                    retval.SetTriangles(subtriangles.ToArray(), submeshIndex);
-                }
-                
-                return retval;
+                return this._subtriangles;
             }
         }
+
+        public List<int> triangles {
+            get {
+                return this._triangles;
+            }
+        }
+
+        public List<Vector2> uvs {
+            get {
+                return this._uvs;
+            }
+        }
+
+        public List<Vector3> vertices {
+            get {
+                return this._vertices;
+            }
+        }
+
+        
 
         public int vertexCount {
             get {

@@ -127,16 +127,22 @@ namespace Assets.components {
             }
 
             //e le assegno ad una mesh
-            Mesh mesh = meshData.mesh;
+            Mesh mesh = new Mesh();
+            mesh.vertices = meshData.vertices.ToArray();
+            mesh.triangles = meshData.triangles.ToArray();
+            mesh.uv = meshData.uvs.ToArray();
+            mesh.subMeshCount = meshData.submeshCount;
 
-
-            //assegno l'array dei materiali per le sottomesh
+            //ora assegno i materiali in modo da rispecchiare l'ordine delle sottomesh
+            Dictionary<int, List<int>> subTriangles = meshData.subTriangles;
             Material[] allMaterials = new Material[meshData.submeshCount];
-            int[] submaterialIndices = meshData.submeshIndices;
-            for (int i = 0; i < submaterialIndices.Length; i++) {
-                int materialIndex = submaterialIndices[i];
-                Material material = factory.prototypes[materialIndex].material;
-                allMaterials[materialIndex] = material;
+            int i = 0;
+            foreach (int voxelPrototypeIndex in subTriangles.Keys) {
+                List<int> submesh = subTriangles[voxelPrototypeIndex];
+                Material material = factory.prototypes[voxelPrototypeIndex].material;
+                mesh.SetTriangles(submesh.ToArray(), i);
+                allMaterials[i] = material;
+                i++;
             }
             renderer.materials = allMaterials;
 
@@ -148,8 +154,6 @@ namespace Assets.components {
             this._collider.sharedMesh = mesh;
         }
 
-
-        
     }
 
 }

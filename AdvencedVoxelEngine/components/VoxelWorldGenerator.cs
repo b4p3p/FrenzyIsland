@@ -40,11 +40,11 @@ namespace Assets.components {
             VoxelPrototype sandyPrototype = this._factory.getPrototype(2);
 
             int chunkSize = this._world.chunkSize;
-            for (int x = 0; x < 2; x++) {
-                for (int z = 0; z < 1; z++) {
+            for (int x = 0; x < 3; x++) {
+                for (int z = 0; z < 3; z++) {
                     for (int y = 0; y < 3; y++) {
                         Voxel voxel;
-                        switch (y) { 
+                        switch (y) {
                             case 0:
                                 voxel = sandyPrototype.instantiateVoxel();
                                 break;
