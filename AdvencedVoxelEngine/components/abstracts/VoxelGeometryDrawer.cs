@@ -7,7 +7,7 @@ namespace Assets.components.abstracts{
 
     public abstract class VoxelGeometryDrawer : MonoBehaviour{
 
-        public abstract void draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData data);
+        public abstract VoxelMeshData draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData data);
 
     }
 }

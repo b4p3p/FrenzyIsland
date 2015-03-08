@@ -9,38 +9,64 @@ using UnityEngine;
 namespace Assets.components {
     public class VoxelCubeGeometryDrawer : VoxelGeometryDrawer {
 
-        public override void draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData meshData) {
+        public override VoxelMeshData draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData meshData) {
             Voxel topVoxel = world.getVoxelAt(x, y + 1, z);
             Voxel bottomVoxel = world.getVoxelAt(x, y - 1, z);
             Voxel backVoxel = world.getVoxelAt(x, y, z + 1);
             Voxel frontVoxel = world.getVoxelAt(x, y, z - 1);
             Voxel rightVoxel = world.getVoxelAt(x + 1, y, z);
             Voxel leftVoxel = world.getVoxelAt(x - 1, y, z);
-            bool isTransparent = voxel.prototype.solid;
-            
-            if (topVoxel==null || (topVoxel!=null && (!topVoxel.prototype.solid && isTransparent))) {
+            bool isSolid = voxel.prototype.solid;
+
+            if (topVoxel == null) {
                 this.FaceDataUp(voxel, x, y, z, meshData);
+            } else { 
+                if(topVoxel.prototype.solid != isSolid){
+                    this.FaceDataUp(voxel, x, y, z, meshData);
+                }
             }
 
-            if (bottomVoxel == null || (bottomVoxel!=null && (!bottomVoxel.prototype.solid && isTransparent))) {
+            if (bottomVoxel == null) {
                 this.FaceDataDown(voxel, x, y, z, meshData);
+            } else {
+                if (bottomVoxel.prototype.solid != isSolid) {
+                    this.FaceDataDown(voxel, x, y, z, meshData);
+                }
             }
 
-            if (backVoxel == null || (backVoxel!=null && (!backVoxel.prototype.solid && isTransparent))){
+            if (backVoxel == null){
                 this.FaceDataNorth(voxel, x, y, z, meshData);
+            }else{
+                if(backVoxel.prototype.solid != isSolid){
+                    this.FaceDataNorth(voxel, x, y, z, meshData);
+                }
             }
 
-            if (frontVoxel == null || (frontVoxel!=null && (!frontVoxel.prototype.solid && isTransparent))) {
+            if (frontVoxel == null) {
                 this.FaceDataSouth(voxel, x, y, z, meshData);
+            } else { 
+                if(frontVoxel.prototype.solid != isSolid){
+                    this.FaceDataSouth(voxel, x, y, z, meshData);
+                }
             }
 
-            if (rightVoxel == null || (rightVoxel!=null && (!rightVoxel.prototype.solid && isTransparent))){
+            if (rightVoxel == null){
                 this.FaceDataEast(voxel, x, y, z, meshData);
+            }else{
+                if(rightVoxel.prototype.solid != isSolid){
+                    this.FaceDataEast(voxel, x, y, z, meshData);
+                }
             }
 
-            if (leftVoxel == null || (leftVoxel!=null && (!leftVoxel.prototype.solid && isTransparent))){
+            if (leftVoxel == null) {
                 this.FaceDataWest(voxel, x, y, z, meshData);
+            } else {
+                if (leftVoxel.prototype.solid != isSolid) {
+                    this.FaceDataEast(voxel, x, y, z, meshData);
+                }
             }
+
+            return meshData;
         }
 
 

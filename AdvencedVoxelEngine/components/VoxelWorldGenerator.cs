@@ -22,9 +22,9 @@ namespace Assets.components {
             int chunkSize = _world.chunkSize;
 
             // 2 * 2 * 2 chunkSize
-            for (int x = 0; x < 10; x++) {
+            for (int x = 0; x < 2; x++) {
                 for (int y = 0; y < 1; y++) {
-                    for (int z = 0; z < 10; z++) {
+                    for (int z = 0; z < 1; z++) {
                         VoxelWorldChunk chunk = _world.getChunkAt(
                             x * chunkSize, y * chunkSize, z * chunkSize
                         );
@@ -43,8 +43,14 @@ namespace Assets.components {
             int chunkSize = this._world.chunkSize;
             for (int x = 0; x < this._world.chunkSize; x++) {
                 for (int z = 0; z < this._world.chunkSize; z++) {
-                    for (int y = 0; y < 4; y++) {
+                    for (int y = 0; y < this._world.chunkSize; y++) {
                         Voxel voxel;
+                        if (y % 2 == 0) {
+                            voxel = sandyPrototype.instantiateVoxel();
+                        } else {
+                            voxel = waterPrototype.instantiateVoxel();
+                        }
+                        /*
                         switch (y) {
                             case 0:
                             case 1:
@@ -53,12 +59,13 @@ namespace Assets.components {
                             default:
                                 voxel = waterPrototype.instantiateVoxel();
                                 break;
-                        }
+                        }*/
                         chunk.addVoxelAt(voxel, x, y, z);
                     }
                 }
             }
 
+            /*
             for (int x = 5; x < 11; x++) {
                 for (int z = 5; z < 11; z++) {
                     for (int y = 0; y < 6; y++) {
@@ -72,7 +79,7 @@ namespace Assets.components {
                     }
                 }
             }
-            
+            */
             chunk.update();
         }
     }

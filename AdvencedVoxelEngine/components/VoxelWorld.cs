@@ -26,6 +26,7 @@ namespace Assets.components {
                 GameObject chunkAnchor = new GameObject("WorldChunk");
                 float semiChunkSize = ((float)this.chunkSize) / 2;
                 chunkAnchor.transform.parent = this.transform;
+                chunkAnchor.isStatic = true;
                 chunk = chunkAnchor.AddComponent<VoxelWorldChunk>() as VoxelWorldChunk;
                 chunk.size = this.chunkSize;
                 chunk.originX = (int)chunkAABBOrigin.x;

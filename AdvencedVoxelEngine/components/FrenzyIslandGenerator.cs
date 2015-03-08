@@ -60,16 +60,16 @@ public class FrenzyIslandGenerator : MonoBehaviour {
 
         int cont = 0;
 
-        for (int x = 0; x < _diamondMatrix.Size / Chunk.chunkSize; x += 1)
+        for (int x = 0; x < _diamondMatrix.Size / this._world.chunkSize; x += 1)
         {
-            for (int z = 0; z < _diamondMatrix.Size / Chunk.chunkSize; z += 1)
+            for (int z = 0; z < _diamondMatrix.Size / this._world.chunkSize; z += 1)
             {
                 //VoxelWorldChunk chunk = _world.getChunkAt(
                 //            x * Chunk.chunkSize, 0, z * Chunk.chunkSize
                 //);
                 //this.generateChunkTest(chunk);
 
-                for (int y = 0; y <= MaxHeight / Chunk.chunkSize; y++)
+                for (int y = 0; y <= MaxHeight / this._world.chunkSize; y++)
                 {
                     int chunkSize = _world.chunkSize;
 
