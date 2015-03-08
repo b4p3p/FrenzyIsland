@@ -30,7 +30,6 @@ public class WorldGeneration : MonoBehaviour {
 	void Start () {
         
         waterLevel = (float) Math.Ceiling( MaxHeight * WaterPercentage );
-        Debug.Log(waterLevel);
 
         Water.transform.localPosition = new Vector3( Water.transform.localPosition.x, waterLevel , Water.transform.localPosition.z );  
         world = GetComponent<World>();
@@ -50,14 +49,14 @@ public class WorldGeneration : MonoBehaviour {
         scannerField = new Scanner(floodFillerField);
         scannerWater = new Scanner(floodFillerWater);
 
-        foreach (Node node in floodFillerWater.list_entry_point)
-        {
-            Debug.DrawLine(new Vector3(node.row, 0, node.col), new Vector3(node.row, 30, node.col), Color.blue, 1000);
-        }
-        foreach (Node node in floodFillerField.list_entry_point)
-        {
-            Debug.DrawLine(new Vector3(node.row, 0, node.col), new Vector3(node.row, 30, node.col), Color.green, 1000);
-        }
+        //foreach (Node node in floodFillerWater.list_entry_point)
+        //{
+        //    Debug.DrawLine(new Vector3(node.row, 0, node.col), new Vector3(node.row, 30, node.col), Color.blue, 1000);
+        //}
+        //foreach (Node node in floodFillerField.list_entry_point)
+        //{
+        //    Debug.DrawLine(new Vector3(node.row, 0, node.col), new Vector3(node.row, 30, node.col), Color.green, 1000);
+        //}
 
         int cont = 0;
 
@@ -90,6 +89,7 @@ public class WorldGeneration : MonoBehaviour {
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
+        if (scannerField != null)
         for (int i = 0; i < scannerField.MainIsland.Vertex - 1; i++)
         {
             Vector3 a = scannerField.MainIsland.ListVertex[i];
