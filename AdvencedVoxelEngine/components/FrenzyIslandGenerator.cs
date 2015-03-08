@@ -21,7 +21,6 @@ public class FrenzyIslandGenerator : MonoBehaviour {
 
     private DiamondSeeder _diamondSeeder;
     private DiamondMatrix _diamondMatrix;
-    private float[,] heights;
     private float _waterLevel;
 
     private FloodFiller floodFillerWater;
@@ -65,14 +64,19 @@ public class FrenzyIslandGenerator : MonoBehaviour {
         {
             for (int z = 0; z < _diamondMatrix.Size / Chunk.chunkSize; z += 1)
             {
+                //VoxelWorldChunk chunk = _world.getChunkAt(
+                //            x * Chunk.chunkSize, 0, z * Chunk.chunkSize
+                //);
+                //this.generateChunkTest(chunk);
+
                 for (int y = 0; y <= MaxHeight / Chunk.chunkSize; y++)
                 {
                     int chunkSize = _world.chunkSize;
 
                     int[,] subMatrix = _diamondMatrix.ToDiscreteMatrix(
-                        MaxHeight, 
+                        MaxHeight,
                         x * chunkSize,
-                        z * chunkSize, 
+                        z * chunkSize,
                         _world.chunkSize);
 
                     VoxelWorldChunk chunk = _world.getChunkAt(
@@ -80,7 +84,7 @@ public class FrenzyIslandGenerator : MonoBehaviour {
                         );
 
                     this.generateChunk(chunk, subMatrix);
-                    
+
                     cont++;
                 }
             }
@@ -89,9 +93,67 @@ public class FrenzyIslandGenerator : MonoBehaviour {
 
     private void generateChunk(VoxelWorldChunk chunk, int[,] subMatrix)
     {
+        int offset_y = chunk.originY;
+
+        VoxelPrototype grassyPrototype = this._factory.getPrototype(0);
+        VoxelPrototype muddyPrototype = this._factory.getPrototype(1);
+        VoxelPrototype sandyPrototype = this._factory.getPrototype(2);
+
+        for (int x = 0; x < subMatrix.GetLength(0); x++)
+        {
+            for (int z = 0; z < subMatrix.GetLength(1); z++)
+            {
+                Voxel voxel = null;
+                int valueChunk = subMatrix[x,z] - offset_y;  //prendo solo i valori che rientrano nel chunk
+
+                if (valueChunk <= 0) 
+                    continue;
+
+                //sabbia solo per le colonne alte 1
+                if (valueChunk == 1 && offset_y == 0)
+                {
+                    voxel = sandyPrototype.instantiateVoxel();
+                    chunk.addVoxelAt(voxel, x, 0, z);
+                    continue;
+                }
+
+                for (int y = 0; y < _world.chunkSize && y < valueChunk; y++)
+                {
+                    if ( subMatrix[x, z] == valueChunk + offset_y )
+                    {
+                        voxel = grassyPrototype.instantiateVoxel();
+
+                    } 
+                    else if ( subMatrix[x, z] < valueChunk + offset_y )
+                    {
+                        voxel = muddyPrototype.instantiateVoxel();
+                    }
+
+                    chunk.addVoxelAt(voxel, x, y, z);
+                }
+
+               
+            }
+        }
+
+        chunk.update();
 
     }
-	
+
+    //private void generateChunkTest(VoxelWorldChunk chunk)
+    //{
+    //    VoxelPrototype grassyPrototype = this._factory.getPrototype(0);
+    //    for (int x = 0; x < _world.chunkSize; x++)
+    //    {
+    //        for (int z = 0; z < _world.chunkSize; z++)
+    //        {
+    //            Voxel voxel = grassyPrototype.instantiateVoxel();
+    //            chunk.addVoxelAt(voxel, x, 0, z);
+    //        }
+    //    }
+    //    chunk.update();
+    //}
+
 	// Update is called once per frame
 	void Update () {
 	
