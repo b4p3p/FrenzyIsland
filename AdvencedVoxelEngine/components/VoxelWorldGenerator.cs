@@ -38,22 +38,22 @@ namespace Assets.components {
             VoxelPrototype grassyPrototype = this._factory.getPrototype(0);
             VoxelPrototype muddyPrototype = this._factory.getPrototype(1);
             VoxelPrototype sandyPrototype = this._factory.getPrototype(2);
+            VoxelPrototype waterPrototype = this._factory.getPrototype(3);
 
             int chunkSize = this._world.chunkSize;
-            for (int x = 0; x < 3; x++) {
-                for (int z = 0; z < 3; z++) {
-                    for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 2; x++) {
+                for (int z = 0; z < 2; z++) {
+                    for (int y = 0; y < 4; y++) {
                         Voxel voxel;
                         switch (y) {
                             case 0:
+                            case 1:
                                 voxel = sandyPrototype.instantiateVoxel();
                                 break;
-                            case 1:
-                                voxel = muddyPrototype.instantiateVoxel();
-                                break;
                             default:
-                                voxel = grassyPrototype.instantiateVoxel();
+                                voxel = waterPrototype.instantiateVoxel();
                                 break;
+
                         }
                         chunk.addVoxelAt(voxel, x, y, z);
                     }

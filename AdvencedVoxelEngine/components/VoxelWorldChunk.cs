@@ -119,7 +119,7 @@ namespace Assets.components {
 
                             if (voxel != null) {
                                 //comunichiamo al drawer le coordinate globali intere
-                                drawer.draw(voxel, world, this.originX + x, this._originY + y, this.originZ + z, meshData);
+                                drawer.draw(voxel, world, x, y, z, meshData);
                             }
                         }
                     }

@@ -24,6 +24,7 @@ namespace Assets.components {
                 chunk = this._chunkBasket.getChunkAt(chunkAABBOrigin);
             } else {
                 GameObject chunkAnchor = new GameObject("WorldChunk");
+                float semiChunkSize = ((float)this.chunkSize) / 2;
                 chunkAnchor.transform.parent = this.transform;
                 chunk = chunkAnchor.AddComponent<VoxelWorldChunk>() as VoxelWorldChunk;
                 chunk.size = this.chunkSize;
@@ -118,10 +119,25 @@ namespace Assets.components {
 
         private Vector3 getGlobalAABBCoordinates(int x, int y, int z) {
             int newX, newY, newZ;
-            Vector3 localAABBCoordinates = this.getLocalAABBCoordinates(x, y, z);
-            newX = (int)(Mathf.Sign(x) * (localAABBCoordinates.x - x));
-            newY = (int)(Mathf.Sign(y) * (localAABBCoordinates.y - y));
-            newZ = (int)(Mathf.Sign(z) * (localAABBCoordinates.z - z));
+
+            if (x >= 0) {
+                newX = (x / this.chunkSize) * this.chunkSize;
+            } else {
+                newX = (this.chunkSize * (x / this.chunkSize)) - this.chunkSize;
+            }
+
+            if (y >= 0) {
+                newY = (y / this.chunkSize) * this.chunkSize;
+            } else {
+                newY = (this.chunkSize * (y / this.chunkSize)) - this.chunkSize;
+            }
+
+            if (z >= 0) {
+                newZ = (z / this.chunkSize) * this.chunkSize;
+            } else {
+                newZ = (this.chunkSize * (z / this.chunkSize)) - this.chunkSize;
+            }
+
             return new Vector3(newX, newY, newZ);
         }
 

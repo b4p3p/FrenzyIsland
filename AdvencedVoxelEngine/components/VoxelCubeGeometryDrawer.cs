@@ -10,27 +10,35 @@ namespace Assets.components {
     public class VoxelCubeGeometryDrawer : VoxelGeometryDrawer {
 
         public override void draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData meshData) {
-            if (!world.hasVoxelAt(x, y + 1, z)) {
+            Voxel topVoxel = world.getVoxelAt(x, y + 1, z);
+            Voxel bottomVoxel = world.getVoxelAt(x, y - 1, z);
+            Voxel backVoxel = world.getVoxelAt(x, y, z + 1);
+            Voxel frontVoxel = world.getVoxelAt(x, y, z - 1);
+            Voxel rightVoxel = world.getVoxelAt(x + 1, y, z);
+            Voxel leftVoxel = world.getVoxelAt(x - 1, y, z);
+
+            
+            if (topVoxel==null || (topVoxel!=null && !topVoxel.prototype.solid)) {
                 this.FaceDataUp(voxel, x, y, z, meshData);
             }
 
-            if (!world.hasVoxelAt(x, y - 1, z)){
+            if (bottomVoxel == null || (bottomVoxel!=null && !bottomVoxel.prototype.solid)) {
                 this.FaceDataDown(voxel, x, y, z, meshData);
             }
 
-            if (!world.hasVoxelAt(x, y, z + 1)) {
+            if (backVoxel == null || (backVoxel!=null && !backVoxel.prototype.solid)){
                 this.FaceDataNorth(voxel, x, y, z, meshData);
             }
 
-            if (!world.hasVoxelAt(x, y, z - 1)) {
+            if (frontVoxel == null || (frontVoxel!=null && !frontVoxel.prototype.solid)) {
                 this.FaceDataSouth(voxel, x, y, z, meshData);
             }
 
-            if (!world.hasVoxelAt(x + 1, y, z)) {
+            if (rightVoxel == null || (rightVoxel!=null && !rightVoxel.prototype.solid)){
                 this.FaceDataEast(voxel, x, y, z, meshData);
             }
 
-            if (!world.hasVoxelAt(x - 1, y, z)) {
+            if (leftVoxel == null || (leftVoxel!=null && !leftVoxel.prototype.solid)){
                 this.FaceDataWest(voxel, x, y, z, meshData);
             }
         }

@@ -7,6 +7,7 @@ public class VoxelPrototype {
     public String name;
     public Material material;
     public bool destructable;
+    public bool solid;
 
     [NonSerialized]
     public int subMaterialIndex;
