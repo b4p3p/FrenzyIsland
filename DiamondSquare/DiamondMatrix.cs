@@ -307,6 +307,7 @@ namespace DiamondSquare
                     double h = matrix[i + offsetX, j + offsetZ].Value * MaxHeight;
                     int tmp = (int)Math.Ceiling(h);
                     if (tmp == 0) tmp = 1;
+
                     ris[i, j] = tmp;
                 }
             }

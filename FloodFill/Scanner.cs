@@ -9,26 +9,28 @@ namespace FloodFill
     class Scanner
     {
         private FloodFiller floodResult;
+        public LinkedList<Node> listEntryPoint;
 
         public List<Shape> ListShape;
         public Shape MainIsland;
 
-        public LinkedList<Node> ListEntryPoint { get { return floodResult.list_entry_point; } }
-
-        public Scanner(FloodFiller floodResult, int[,] matrix, float waterLevel )
+        public Scanner( FloodFiller floodResult )
         {
             this.floodResult = floodResult;
+            this.listEntryPoint = floodResult.list_entry_point;
+            
             ListShape = new List<Shape>();
+            
             Scan();
         }
 
         private void Scan()
         {
             int cont = 0;
-            while( ListEntryPoint.Count > 0 )
+            while( listEntryPoint.Count > 0 )
             {
-                Node n = ListEntryPoint.First.Value;
-                ListEntryPoint.RemoveFirst();
+                Node n = listEntryPoint.First.Value;
+                listEntryPoint.RemoveFirst();
 
                 if (floodResult.IsOutOfBounds(n.row, n.col)) continue;
 
@@ -36,8 +38,8 @@ namespace FloodFill
                 
                 Elaborate(listVertex, n);
                 
-                if ( listVertex.Count > 20)
-                    //ListShape.Add( new Shape(listVertex , island ));
+                if ( listVertex.Count > 5)
+                    ListShape.Add( new Shape( listVertex ));
                 
                 cont += listVertex.Count;
             }
@@ -49,7 +51,7 @@ namespace FloodFill
 
         private void Elaborate(List<Vector3> listVertex , Node n)
         {
-            //listVertex.Add( new Vector3(n.col, island.GetRealHeight(n.row, n.col) + 5, n.row));
+            listVertex.Add( new Vector3( n.row, n.Value + floodResult.correctionValue , n.col) );
             floodResult.matrix_entry_point[n.row, n.col] = null;
             ConnectedNode(listVertex, n);
         }
@@ -62,24 +64,31 @@ namespace FloodFill
             //top
             row = n.row + 1;    col = n.col;
             ConnectedNode(listVertex, row, col);
+
             //top right
             row = n.row + 1;    col = n.col + 1;
             ConnectedNode(listVertex, row, col);
+            
             //right
             row = n.row;        col = n.col + 1;
             ConnectedNode(listVertex, row, col);
+            
             //bottom right
             row = n.row - 1;      col = n.col + 1;
             ConnectedNode(listVertex, row, col);
+            
             //bottom
             row = n.row - 1;    col = n.col;
             ConnectedNode(listVertex, row, col);
+            
             //bottom left
             row = n.row - 1;    col = n.col - 1;
             ConnectedNode(listVertex, row, col);
+            
             //left
             row = n.row;        col = n.col - 1;
             ConnectedNode(listVertex, row, col);
+            
             //top left
             row = n.row + 1;    col = n.col - 1;
             ConnectedNode(listVertex, row, col);

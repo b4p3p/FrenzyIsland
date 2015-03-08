@@ -8,12 +8,13 @@ namespace FloodFill
 {
     class Shape
     {
-        public List<Vector3> listVertex;
+        public List<Vector3> ListVertex { get; set; }
+
         public int Vertex;
 
         public Shape(List<Vector3> listVertex)
         {
-            this.listVertex = listVertex;
+            this.ListVertex = listVertex;
             this.Vertex = listVertex.Count;
         }
 
@@ -35,21 +36,11 @@ namespace FloodFill
         }
         private Vector3 _centerShape = new Vector3(-1,-1,-1);
 
-        public bool IsMainIsland 
-        {
-            get { return _isMainIsland; }
-            set { 
-                //_isMainIsland = value; 
-                //float x = Island.TerrainSize / 2;
-                //float z = Island.TerrainSize / 2;
-                //CenterShape = new Vector3(x, Island.GetRealHeight(z, x), z);
-            } 
-        }
-        private bool _isMainIsland = false;
-
+        public bool IsMainIsland { get;set; } 
+        
         public bool Contains(float x, float z)
         {
-            return Contains(listVertex, new Vector2(x, z));
+            return Contains(ListVertex, new Vector2(x, z));
         }
 
         private bool Contains( List<Vector3> listVertex, Vector2 pnt)

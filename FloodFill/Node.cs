@@ -9,6 +9,7 @@ namespace FloodFill
     {
         public int row { get; set; }
         public int col { get; set; }
+        public float DiscreteValue { get; set; }
         public float Value { get; set; }
         public List<Node> ListEntryPointParents { get; set; }
         public Node Parent { get; set; }

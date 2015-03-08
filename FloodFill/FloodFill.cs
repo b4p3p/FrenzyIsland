@@ -13,34 +13,31 @@ namespace FloodFill
 
         private LinkedList<Node> list_open = new LinkedList<Node>();
         private int cont_visited = 0;
-        private int[,] matrix_ToScan;
         
+        private int[,] matrix_discrete;
+        private float[,] matrix_original;
+
+        internal float correctionValue;
+        internal float waterLevel;
+
         private int rows;
         private int cols;
         private int target;
         
-        public FloodFiller(float[,] matrixToScan, float waterLevel, int startRow, int startCol)
+        public FloodFiller(float[,] matrixToScan, float waterLevel, int startRow, int startCol, float correctionValue)
         {
             rows = matrixToScan.GetLength(0);
             cols = matrixToScan.GetLength(1);
+            
+            this.matrix_original = matrixToScan;
+            this.waterLevel = waterLevel;
+            this.correctionValue = correctionValue;
 
             PreProcessing(matrixToScan, waterLevel);
             
-            target = matrix_ToScan[startRow, startCol];
+            target = matrix_discrete[startRow, startCol];
 
             FloodFillAlgorithm( SetValue ( new Node(startRow, startCol) ) );
-        }
-
-        public FloodFiller(int[,] matrixToScan, float waterLevel, int startRow, int startCol)
-        {
-            rows = matrixToScan.GetLength(0);
-            cols = matrixToScan.GetLength(1);
-
-            PreProcessing(matrixToScan, waterLevel);
-
-            target = matrix_ToScan[startRow, startCol];
-
-            FloodFillAlgorithm(SetValue(new Node(startRow, startCol)));
         }
 
         private void FloodFillAlgorithm(Node startNode )
@@ -56,12 +53,12 @@ namespace FloodFill
 
                 cont_visited++;
                 
-                if (n.Value==-1)   continue;
+                if (n.DiscreteValue==-1)   continue;
                 if (IsChecked(n))  continue;
 
                 SetChecked(n);
 
-                if (n.Value != target) {
+                if (n.DiscreteValue != target) {
                     AddEntryPoint(n);
                 } else {
                     list_open.AddLast( SetValue(n.Left() ));
@@ -88,40 +85,20 @@ namespace FloodFill
 
         private void PreProcessing(float[,] _matrixToScan, float waterLevel)
         {
-            matrix_ToScan = new int[_matrixToScan.GetLength(0), 
+            matrix_discrete = new int[_matrixToScan.GetLength(0), 
                                     _matrixToScan.GetLength(1)];
 
             matrix_entry_point = new Node[_matrixToScan.GetLength(0),
                                           _matrixToScan.GetLength(1)];
 
-            for (int r = 0; r < matrix_ToScan.GetLength(0); r++)
+            for (int r = 0; r < matrix_discrete.GetLength(0); r++)
             {
-                for (int c = 0; c < matrix_ToScan.GetLength(1); c++)
+                for (int c = 0; c < matrix_discrete.GetLength(1); c++)
                 {
-                    if (_matrixToScan[r, c] < waterLevel) 
-                        matrix_ToScan[r, c] = 0;
+                    if (_matrixToScan[r, c] < waterLevel + 0.5) 
+                        matrix_discrete[r, c] = 0;
                     else
-                        matrix_ToScan[r, c] = 1;
-                }
-            }
-        }
-
-        private void PreProcessing(int[,] _matrixToScan, float waterLevel)
-        {
-            matrix_ToScan = new int[_matrixToScan.GetLength(0),
-                                    _matrixToScan.GetLength(1)];
-
-            matrix_entry_point = new Node[_matrixToScan.GetLength(0),
-                                          _matrixToScan.GetLength(1)];
-
-            for (int r = 0; r < matrix_ToScan.GetLength(0); r++)
-            {
-                for (int c = 0; c < matrix_ToScan.GetLength(1); c++)
-                {
-                    if (_matrixToScan[r, c] - 1 < waterLevel)
-                        matrix_ToScan[r, c] = 0;
-                    else
-                        matrix_ToScan[r, c] = 1;
+                        matrix_discrete[r, c] = 1;
                 }
             }
         }
@@ -149,12 +126,14 @@ namespace FloodFill
         {
             if ( IsOutOfBounds(node.row , node.col) )
             {
+                node.DiscreteValue = -1;
                 node.Value = -1;
                 return node;
             }
             else
             {
-                node.Value = matrix_ToScan[node.row, node.col];
+                node.DiscreteValue = matrix_discrete[node.row, node.col];
+                node.Value = matrix_original[node.row, node.col];
                 return node;
             }
         }

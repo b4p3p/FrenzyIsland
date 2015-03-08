@@ -2,6 +2,7 @@
 using System.Collections;
 using DiamondSquare;
 using FloodFill;
+using System;
 
 [RequireComponent(typeof( World ))]
 [RequireComponent(typeof( DiamondSeeder ))]
@@ -28,7 +29,9 @@ public class WorldGeneration : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         
-        waterLevel = MaxHeight * WaterPercentage;
+        waterLevel = (float) Math.Ceiling( MaxHeight * WaterPercentage );
+        Debug.Log(waterLevel);
+
         Water.transform.localPosition = new Vector3( Water.transform.localPosition.x, waterLevel , Water.transform.localPosition.z );  
         world = GetComponent<World>();
         
@@ -37,13 +40,15 @@ public class WorldGeneration : MonoBehaviour {
         diamondMatrix.Elaborate();
 
         int[,] matrixDiscrete = diamondMatrix.ToDiscreteMatrix(MaxHeight, 0, 0, Size);
+        float[,] _matrixDiscrete = new float[matrixDiscrete.GetLength(0), matrixDiscrete.GetLength(1)];
+        
+        Array.Copy(matrixDiscrete, _matrixDiscrete, matrixDiscrete.Length);
 
-        floodFillerWater = new FloodFiller(matrixDiscrete, waterLevel, 0, 0);
-        floodFillerField = new FloodFiller(matrixDiscrete, waterLevel, Size / 2, Size / 2);
+        floodFillerField = new FloodFiller(_matrixDiscrete, waterLevel, Size / 2, Size / 2, 0.5f);
+        floodFillerWater = new FloodFiller(_matrixDiscrete, waterLevel, 0, 0, 0.5f);
 
-
-        Debug.Log(floodFillerWater.list_entry_point.Count);
-        Debug.Log(floodFillerField.list_entry_point.Count);
+        scannerField = new Scanner(floodFillerField);
+        scannerWater = new Scanner(floodFillerWater);
 
         foreach (Node node in floodFillerWater.list_entry_point)
         {
@@ -62,12 +67,12 @@ public class WorldGeneration : MonoBehaviour {
             {
                 for (int y = 0; y <= MaxHeight / Chunk.chunkSize ; y++)
                 {
-                    //Debug.Log("x=" + x + " y=" + y + " z=" + z);
                     int[,] subMatrix = diamondMatrix.ToDiscreteMatrix( 
                         MaxHeight, x * Chunk.chunkSize, 
                         z * Chunk.chunkSize, Chunk.chunkSize);
                     
-                    world.CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize, subMatrix );
+                    world.CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize, 
+                                      subMatrix );
                     cont++;
                 }
             }
@@ -82,5 +87,16 @@ public class WorldGeneration : MonoBehaviour {
 	
 	}
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        for (int i = 0; i < scannerField.MainIsland.Vertex - 1; i++)
+        {
+            Vector3 a = scannerField.MainIsland.ListVertex[i];
+            Vector3 b = scannerField.MainIsland.ListVertex[i + 1];
+            if (Vector3.Distance(a, b) < 2)
+                Gizmos.DrawLine(a, b);
+        }
+    }
 
 }
