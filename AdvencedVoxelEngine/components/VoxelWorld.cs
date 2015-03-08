@@ -102,13 +102,16 @@ namespace Assets.components {
 
 
         public Voxel getVoxelAt(int x, int y, int z) {
+            
             Voxel retval = null;
+
             Vector3 chunkAABBOrigin = this.getGlobalAABBCoordinates(x, y, z);
             Vector3 chunkAABBOffset = this.getLocalAABBCoordinates(x, y, z);
 
             //estrazione del chunk corrispondente alla posizione 
             //cui si desidera aggiungere un voxel.
-            if (this._chunkBasket.hasChunkAt(chunkAABBOrigin)) {
+            if (this._chunkBasket.hasChunkAt(chunkAABBOrigin))
+            {
                 VoxelWorldChunk chunk = this._chunkBasket.getChunkAt(chunkAABBOrigin);
                 retval = chunk.getVoxelAt((int)chunkAABBOffset.x, (int)chunkAABBOffset.y, (int)chunkAABBOffset.z);
             }

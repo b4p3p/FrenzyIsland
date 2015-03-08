@@ -94,7 +94,7 @@ public class FrenzyIslandGenerator : MonoBehaviour {
         //    }
         //}
 
-        Debug.Log("Creati " + cont + " chunk");
+        //Debug.Log("Creati " + cont + " chunk");
     }
 
     private void generateChunk(VoxelWorldChunk chunk, int[,] subMatrix)
@@ -142,6 +142,7 @@ public class FrenzyIslandGenerator : MonoBehaviour {
             }
         }
 
+        
         chunk.update();
 
     }
@@ -156,14 +157,23 @@ public class FrenzyIslandGenerator : MonoBehaviour {
         {
             for (int z = 0; z < _world.chunkSize; z++)
             {
-                for (int y = 0; y < 4; y++)
+                for (int y = 0; y < _world.chunkSize; y++)
                 {
-                    Voxel voxelGrassy = grassyPrototype.instantiateVoxel();
-                    chunk.addVoxelAt(voxelGrassy, x, y, z);
+                    if (chunk.originX == 0)
+                    {
+                        Voxel voxelGrassy = grassyPrototype.instantiateVoxel();
+                        chunk.addVoxelAt(voxelGrassy, x, y, z);
+                    }
+                    else
+                    {
+                        Voxel voxelGrassy = muddyPrototype.instantiateVoxel();
+                        chunk.addVoxelAt(voxelGrassy, x, y, z);
+                    }
                 }
 
             }
         }
+        Debug.Log("update");
         chunk.update();
     }
 

@@ -10,6 +10,12 @@ namespace Assets.components {
     public class VoxelCubeGeometryDrawer : VoxelGeometryDrawer {
 
         public override VoxelMeshData draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData meshData) {
+
+            //TODO viene richiamata ma x,y,z sono sempre 0,0,0
+            // grassy a x=0 muddy x=1
+
+            Debug.Log("draw x=" + x + " y=" + y + " z=" + z);
+            
             Voxel topVoxel = world.getVoxelAt(x, y + 1, z);
             Voxel bottomVoxel = world.getVoxelAt(x, y - 1, z);
             Voxel backVoxel = world.getVoxelAt(x, y, z + 1);
