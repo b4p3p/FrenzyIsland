@@ -9,19 +9,19 @@ using UnityEngine;
 namespace Assets.components {
     public class VoxelCubeGeometryDrawer : VoxelGeometryDrawer {
 
-        public override VoxelMeshData draw(Voxel voxel, VoxelWorld world, int x, int y, int z, VoxelMeshData meshData) {
+        public override VoxelMeshData draw(Voxel voxel, VoxelWorldChunk chunk, VoxelWorld world, int x, int y, int z, VoxelMeshData meshData) {
 
             //TODO viene richiamata ma x,y,z sono sempre 0,0,0
             // grassy a x=0 muddy x=1
 
-            Debug.Log("draw x=" + x + " y=" + y + " z=" + z);
-            
-            Voxel topVoxel = world.getVoxelAt(x, y + 1, z);
-            Voxel bottomVoxel = world.getVoxelAt(x, y - 1, z);
-            Voxel backVoxel = world.getVoxelAt(x, y, z + 1);
-            Voxel frontVoxel = world.getVoxelAt(x, y, z - 1);
-            Voxel rightVoxel = world.getVoxelAt(x + 1, y, z);
-            Voxel leftVoxel = world.getVoxelAt(x - 1, y, z);
+            //Debug.Log("draw x=" + x + " y=" + y + " z=" + z);
+
+            Voxel topVoxel = world.getVoxelAt(chunk.originX + x, chunk.originY + y + 1, chunk.originZ + z);
+            Voxel bottomVoxel = world.getVoxelAt(chunk.originX + x, chunk.originY + y - 1, chunk.originZ + z);
+            Voxel backVoxel = world.getVoxelAt(chunk.originX + x, chunk.originY + y, chunk.originZ + z + 1);
+            Voxel frontVoxel = world.getVoxelAt(chunk.originX + x, chunk.originY + y, chunk.originZ + z - 1);
+            Voxel rightVoxel = world.getVoxelAt(chunk.originX + x + 1, chunk.originY + y, chunk.originZ + z);
+            Voxel leftVoxel = world.getVoxelAt(chunk.originX + x - 1, chunk.originY + y, chunk.originZ + z);
             bool isSolid = voxel.prototype.solid;
 
             if (topVoxel == null) {

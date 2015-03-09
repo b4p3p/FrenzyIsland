@@ -60,41 +60,39 @@ public class FrenzyIslandGenerator : MonoBehaviour {
 
         int cont = 0;
 
+        /*
         int chunkSize = _world.chunkSize;
         VoxelWorldChunk chunk = _world.getChunkAt( 0, 0, 0 );
         this.generateChunkTest(chunk, 0);
 
         VoxelWorldChunk chunk2 = _world.getChunkAt(chunk.size, 0, 0);
         this.generateChunkTest(chunk2, 0);
+        */
 
+        for (int x = 0; x < _diamondMatrix.Size / _world.chunkSize; x += 1) {
+            for (int z = 0; z < _diamondMatrix.Size / _world.chunkSize; z += 1) {
+                for (int y = 0; y <= MaxHeight / _world.chunkSize; y++) {
+                    int chunkSize = _world.chunkSize;
 
-        //for (int x = 0; x < _diamondMatrix.Size / _world.chunkSize; x += 1)
-        //{
-        //    for (int z = 0; z < _diamondMatrix.Size / _world.chunkSize; z += 1)
-        //    {
-        //        for (int y = 0; y <= MaxHeight / _world.chunkSize; y++)
-        //        {
-        //            int chunkSize = _world.chunkSize;
+                    int[,] subMatrix = _diamondMatrix.ToDiscreteMatrix(
+                        MaxHeight,
+                        x * chunkSize,
+                        z * chunkSize,
+                        _world.chunkSize);
 
-        //            int[,] subMatrix = _diamondMatrix.ToDiscreteMatrix(
-        //                MaxHeight,
-        //                x * chunkSize,
-        //                z * chunkSize,
-        //                _world.chunkSize);
+                    VoxelWorldChunk chunk = _world.getChunkAt(
+                            x * chunkSize, y * chunkSize, z * chunkSize
+                        );
 
-        //            VoxelWorldChunk chunk = _world.getChunkAt(
-        //                    x * chunkSize, y * chunkSize, z * chunkSize
-        //                );
+                    this.generateChunk(chunk, subMatrix);
+                    //this.generateChunkTest(chunk, y * chunkSize);
 
-        //            this.generateChunk(chunk, subMatrix);
-        //            //this.generateChunkTest(chunk, y * chunkSize);
+                    cont++;
+                }
+            }
+        }
 
-        //            cont++;
-        //        }
-        //    }
-        //}
-
-        //Debug.Log("Creati " + cont + " chunk");
+        Debug.Log("Creati " + cont + " chunk");
     }
 
     private void generateChunk(VoxelWorldChunk chunk, int[,] subMatrix)

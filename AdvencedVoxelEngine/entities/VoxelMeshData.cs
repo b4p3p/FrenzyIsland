@@ -8,13 +8,11 @@ namespace Assets.entities {
     
     public class VoxelMeshData {
 
-        private List<int> _triangles;
         private List<Vector3> _vertices;
         private List<Vector2> _uvs;
         private Dictionary<int, List<int>> _subtriangles;
 
         public VoxelMeshData() {
-            this._triangles = new List<int>();
             this._vertices = new List<Vector3>();
             this._uvs = new List<Vector2>();
             this._subtriangles = new Dictionary<int, List<int>>();
@@ -28,10 +26,6 @@ namespace Assets.entities {
             subTrianglesList.Add(firstIndex);
             subTrianglesList.Add(secondIndex);
             subTrianglesList.Add(thirdIndex);
-
-            this._triangles.Add(firstIndex);
-            this._triangles.Add(secondIndex);
-            this._triangles.Add(thirdIndex);
         }
 
         public void addVertex(Vector3 vertex) {
@@ -45,12 +39,6 @@ namespace Assets.entities {
         public Dictionary<int, List<int>> subTriangles {
             get {
                 return this._subtriangles;
-            }
-        }
-
-        public List<int> triangles {
-            get {
-                return this._triangles;
             }
         }
 

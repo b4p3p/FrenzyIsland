@@ -120,8 +120,8 @@ namespace Assets.components {
                             //TODO con la modifica di originX etc le facce vengono visualizzate bene
 
                             if (voxel != null) {
-                                //comunichiamo al drawer le coordinate globali intere
-                                meshData = drawer.draw(voxel, world, x + originX, y + originY, z + originZ, meshData);
+                                //comunichiamo al drawer le coordinate locali e il chunk di riferimento
+                                meshData = drawer.draw(voxel, this, world, x, y, z, meshData);
                             }
                         }
                     }
@@ -131,7 +131,6 @@ namespace Assets.components {
             //e le assegno ad una mesh
             Mesh mesh = new Mesh();
             mesh.vertices = meshData.vertices.ToArray();
-            mesh.triangles = meshData.triangles.ToArray();
             mesh.uv = meshData.uvs.ToArray();
             mesh.subMeshCount = meshData.submeshCount;
 
