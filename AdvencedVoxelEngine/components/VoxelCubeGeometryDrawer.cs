@@ -24,11 +24,17 @@ namespace Assets.components {
             Voxel leftVoxel = world.getVoxelAt(chunk.originX + x - 1, chunk.originY + y, chunk.originZ + z);
             bool isSolid = voxel.prototype.solid;
 
+            //ciascuna faccia viene disegnata se non è presente un voxel adiacente
+            //oppure se è presente (con una solidità differente da quella del voxel
+            //da disegnare) e trasparente.
+
             if (topVoxel == null) {
                 this.FaceDataUp(voxel, x, y, z, meshData);
             } else { 
                 if(topVoxel.prototype.solid != isSolid){
-                    this.FaceDataUp(voxel, x, y, z, meshData);
+                    if (topVoxel.prototype.solid == false) {
+                        this.FaceDataUp(voxel, x, y, z, meshData);
+                    }
                 }
             }
 
@@ -36,7 +42,9 @@ namespace Assets.components {
                 this.FaceDataDown(voxel, x, y, z, meshData);
             } else {
                 if (bottomVoxel.prototype.solid != isSolid) {
-                    this.FaceDataDown(voxel, x, y, z, meshData);
+                    if (bottomVoxel.prototype.solid == false) {
+                        this.FaceDataDown(voxel, x, y, z, meshData);
+                    }
                 }
             }
 
@@ -44,7 +52,9 @@ namespace Assets.components {
                 this.FaceDataNorth(voxel, x, y, z, meshData);
             }else{
                 if(backVoxel.prototype.solid != isSolid){
-                    this.FaceDataNorth(voxel, x, y, z, meshData);
+                    if (backVoxel.prototype.solid == false) {
+                        this.FaceDataNorth(voxel, x, y, z, meshData);
+                    }
                 }
             }
 
@@ -52,7 +62,9 @@ namespace Assets.components {
                 this.FaceDataSouth(voxel, x, y, z, meshData);
             } else { 
                 if(frontVoxel.prototype.solid != isSolid){
-                    this.FaceDataSouth(voxel, x, y, z, meshData);
+                    if (frontVoxel.prototype.solid == false) {
+                        this.FaceDataSouth(voxel, x, y, z, meshData);
+                    }
                 }
             }
 
@@ -60,7 +72,9 @@ namespace Assets.components {
                 this.FaceDataEast(voxel, x, y, z, meshData);
             }else{
                 if(rightVoxel.prototype.solid != isSolid){
-                    this.FaceDataEast(voxel, x, y, z, meshData);
+                    if (rightVoxel.prototype.solid == false) {
+                        this.FaceDataEast(voxel, x, y, z, meshData);
+                    }
                 }
             }
 
@@ -68,7 +82,9 @@ namespace Assets.components {
                 this.FaceDataWest(voxel, x, y, z, meshData);
             } else {
                 if (leftVoxel.prototype.solid != isSolid) {
-                    this.FaceDataEast(voxel, x, y, z, meshData);
+                    if (leftVoxel.prototype.solid == false) {
+                        this.FaceDataWest(voxel, x, y, z, meshData);
+                    }
                 }
             }
 
