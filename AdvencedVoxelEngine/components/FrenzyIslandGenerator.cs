@@ -35,7 +35,7 @@ public class FrenzyIslandGenerator : MonoBehaviour {
         this._diamondSeeder = GetComponent<DiamondSeeder>();
         this._waterLevel = (float)Math.Ceiling(MaxHeight * WaterPercentage);
 
-        //this.Water.transform.localPosition = new Vector3(Water.transform.localPosition.x, _waterLevel, Water.transform.localPosition.z);  
+        this.Water.transform.localPosition = new Vector3(Water.transform.localPosition.x, _waterLevel, Water.transform.localPosition.z);  
     }
 
 	void Start () {
